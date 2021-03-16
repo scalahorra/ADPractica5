@@ -43,8 +43,7 @@ public class AppXQuery {
 					XMLResource n2 = ((XMLResource) ri.nextResource());
 					System.out.println(": " + n2.getContent() + " productos");
 				}
-			}
-			
+			}			
 			System.out.println("********************************************************************************");
 			
 			System.out.println("********************************************************************************");
@@ -58,10 +57,44 @@ public class AppXQuery {
 
 			while (ri.hasMoreResources()) {
 				XMLResource n = ((XMLResource) ri.nextResource());
-				System.out.println(n.getContent());
+				System.out.println("\t" + n.getContent());
+			}			
+			System.out.println("********************************************************************************");
+			
+			System.out.println("********************************************************************************");
+			System.out.println("3. Obtén por cada zona la denominación del o de los productos más caros");
+			
+			ri = xq.query("for $v in distinct-values(/productos/produc/cod_zona) return ($v, /productos/produc[precio ="
+					+ " max(/productos/produc[cod_zona = $v]/precio)]/denominacion/text())").getIterator();
+
+			while (ri.hasMoreResources()) {
+				XMLResource n = ((XMLResource) ri.nextResource());
+				System.out.print("\tZona " + n.getContent());
+				if (ri.hasMoreResources()) {
+					XMLResource n2 = ((XMLResource) ri.nextResource());
+					System.out.println(": " + n2.getContent() + " es el producto más caro");
+				}
+			}			
+			System.out.println("********************************************************************************");
+			
+			System.out.println("********************************************************************************");
+			System.out.println("4. Obtén la denominación de los productos contenida entra las etiquetas <placa></pla-\r\n"
+					+ "ca> para los productos en cuya denominación aparece la palabra Placa Base, <me-\r\n"
+					+ "moria></memoria>, para los que contienen la palabra Memoria <micro></micro>,\r\n"
+					+ "\r\n"
+					+ "para los que contienen la palabra Micro y <otros></otros> para el resto de pro-\r\n"
+					+ "ductos.");
+			
+			ri = xq.query("(<placa>{/productos/produc/denominacion[contains(., 'Placa Base')]}</placa>,"
+					+ "<micro>{/productos/produc/denominacion[contains(., 'Micro')]}</micro>,"
+					+ "<memoria>{/productos/produc/denominacion[contains(., 'Memoria')]}</memoria>,"
+					+ "<otros>{/productos/produc/denominacion[not(contains(., 'Memoria') or contains(., 'Micro')"
+					+ " or contains(., 'Placa Base'))]}</otros>)").getIterator();
+
+			while (ri.hasMoreResources()) {
+				XMLResource n = ((XMLResource) ri.nextResource());
+				System.out.println("\t" + n.getContent());	
 			}
-			
-			
 			System.out.println("********************************************************************************");
 
 			
@@ -70,5 +103,4 @@ public class AppXQuery {
 		}
 
 	}
-
 }
