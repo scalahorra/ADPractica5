@@ -106,11 +106,30 @@ public class AppXQuery {
 
 			while (ri.hasMoreResources()) {
 				XMLResource n = ((XMLResource) ri.nextResource());
-				System.out.print("\tZona " + n.getContent());
+				System.out.print("Sucursal " + n.getContent());
+
 				if (ri.hasMoreResources()) {
-					XMLResource n2 = ((XMLResource) ri.nextResource());
-					System.out.println(": " + n2.getContent() + " productos");
+					XMLResource n2 = (XMLResource) ri.nextResource();
+					System.out.print(": " + n2.getContent() + " cuentas de ahorro y ");
 				}
+
+				if (ri.hasMoreResources()) {
+					XMLResource n2 = (XMLResource) ri.nextResource();
+					System.out.println(n2.getContent() + " cuentas de pensiones");
+				}
+			}			
+			System.out.println("********************************************************************************");
+			
+			System.out.println("********************************************************************************");
+			System.out.println("5. Devuelve la cuenta del tipo PENSIONES que ha hecho más aportación.");
+			
+			ri = xq.query("/sucursales/sucursal/cuenta[data(@tipo) = 'PENSIONES' and aportacion ="
+					+ " max(/sucursales/sucursal/cuenta/aportacion)]").getIterator();
+
+			while(ri.hasMoreResources()) {
+				
+				XMLResource n = (XMLResource) ri.nextResource();
+				System.out.println("\t" + n.getContent());
 			}			
 			System.out.println("********************************************************************************");
 
