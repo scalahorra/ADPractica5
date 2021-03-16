@@ -30,7 +30,7 @@ public class AppXQuery {
 			
 			ResourceIterator ri;
 			
-			
+			System.out.println("****CONSULTAS PRODUCTOS****");
 			System.out.println("********************************************************************************");
 			System.out.println("1. Obtén por cada zona el número de productos que tiene");
 			
@@ -95,6 +95,23 @@ public class AppXQuery {
 				XMLResource n = ((XMLResource) ri.nextResource());
 				System.out.println("\t" + n.getContent());	
 			}
+			System.out.println("********************************************************************************");
+			
+			System.out.println("****CONSULTAS SUCURSALES****");
+			System.out.println("********************************************************************************");
+			System.out.println("1. Devuelve el código de sucursal y el número de cuentas que tiene de tipo AHORRO y de tipo pensiones.");
+			
+			ri = xq.query("for $suc in /sucursales/sucursal return (data($suc/@codigo), count($suc/cuenta[data(@tipo)='AHORRO']),"
+					+ " count($suc/cuenta[data(@tipo)='PENSIONES']))").getIterator();
+
+			while (ri.hasMoreResources()) {
+				XMLResource n = ((XMLResource) ri.nextResource());
+				System.out.print("\tZona " + n.getContent());
+				if (ri.hasMoreResources()) {
+					XMLResource n2 = ((XMLResource) ri.nextResource());
+					System.out.println(": " + n2.getContent() + " productos");
+				}
+			}			
 			System.out.println("********************************************************************************");
 
 			
