@@ -37,12 +37,11 @@ public class AppXQuery {
 			ri = xq.query("for $v in distinct-values(/productos/produc/cod_zona) return ($v, count(/productos/produc[cod_zona = $v]))").getIterator();
 
 			while (ri.hasMoreResources()) {
-				System.out.println();
-				XMLResource zona = ((XMLResource) ri.nextResource());
-				System.out.print("\tLa zona " + zona.getContent());
+				XMLResource n = ((XMLResource) ri.nextResource());
+				System.out.print("\tZona " + n.getContent());
 				if (ri.hasMoreResources()) {
-					XMLResource count = ((XMLResource) ri.nextResource());
-					System.out.println(" tiene " + count.getContent() + " productos");
+					XMLResource n2 = ((XMLResource) ri.nextResource());
+					System.out.println(": " + n2.getContent() + " productos");
 				}
 			}
 			
@@ -58,7 +57,6 @@ public class AppXQuery {
 					+ "$v]/denominacion }").getIterator();
 
 			while (ri.hasMoreResources()) {
-				System.out.println();
 				XMLResource n = ((XMLResource) ri.nextResource());
 				System.out.println(n.getContent());
 			}
