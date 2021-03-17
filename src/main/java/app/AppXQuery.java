@@ -121,6 +121,29 @@ public class AppXQuery {
 			System.out.println("********************************************************************************");
 			
 			System.out.println("********************************************************************************");
+			System.out.println("3. Devuelve el nombre de los directores, el código de sucursal y la población de las"
+					+ "sucursales con más de 3 cuentas.");
+			
+			ri = xq.query("for $suc in /sucursales/sucursal[count(cuenta) > 3] return (data($suc/@codigo),"
+					+ " $suc/director/text(), $suc/poblacion/text())").getIterator();
+
+			while (ri.hasMoreResources()) {
+				XMLResource n = ((XMLResource) ri.nextResource());
+				System.out.print("Código: " + n.getContent() + " | ");
+
+				if (ri.hasMoreResources()) {
+					XMLResource n2 = (XMLResource) ri.nextResource();
+					System.out.print("Director: " + n2.getContent() + " | ");
+				}
+
+				if (ri.hasMoreResources()) {
+					XMLResource n2 = (XMLResource) ri.nextResource();
+					System.out.println("Población: " + n2.getContent() + " | ");
+				}
+			}	
+			System.out.println("********************************************************************************");
+			
+			System.out.println("********************************************************************************");
 			System.out.println("5. Devuelve la cuenta del tipo PENSIONES que ha hecho más aportación.");
 			
 			ri = xq.query("/sucursales/sucursal/cuenta[data(@tipo) = 'PENSIONES' and aportacion ="
